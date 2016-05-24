@@ -9,7 +9,6 @@ public class Trie {
 	class TrieNode {
         Map<String, TrieNode> next = new HashMap<>();
         int count;
-        boolean leaf;
     }
 	
 	public Trie() {
@@ -18,16 +17,13 @@ public class Trie {
 
     public void put(List<String> key) {
         TrieNode currentNode = root;
-//        System.out.println(Thread.currentThread().getName() + " key " + key);
         for (String str : key) {
             if (!currentNode.next.containsKey(str)) {
                 currentNode.next.put(str, new TrieNode());
             }
             currentNode = currentNode.next.get(str);
             currentNode.count++;
-//            System.out.println("str " + str + " " + currentNode.count);
         }
-        currentNode.leaf = true;
     }
 
     public int get(List<String> key) {
@@ -37,7 +33,6 @@ public class Trie {
                 return 0;
             }
             currentNode = currentNode.next.get(str);
-//            System.out.println("get " + str + " " + currentNode.count);
         }
         return currentNode.count;
     }

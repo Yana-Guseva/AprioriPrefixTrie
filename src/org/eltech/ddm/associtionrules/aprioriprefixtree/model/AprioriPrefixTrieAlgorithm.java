@@ -51,22 +51,29 @@ public class AprioriPrefixTrieAlgorithm extends MiningAlgorithm{
 						new Calculate1ItemSetSupportStep(miningSettings),
 						new CreateLarge1ItemSetStep(miningSettings)));
 		tcs.addListenerExecute(new StepExecuteTimingListner());
-
-
 		
-		LargeItemSetListsCycleStep lislcs = new LargeItemSetListsCycleStep(miningSettings,
-				new TransactionsCycleStepPrefixTrie(miningSettings, 
-						new CreatePrefixTrieStep(miningSettings)),
-				new K_1LargeItemSetsCycleStep(miningSettings, 
-						new RemoveCandadateStep(miningSettings)),
-				new K_1LargeItemSetsCycleStep(miningSettings,
-						new K_1LargeItemSetsFromCurrentCycleStep(miningSettings,
-								new CreateKItemSetCandidateStep(miningSettings),
-								new IsThereCurrenttCandidate(miningSettings,
-										new GetCandidateSupportStep(miningSettings))
-						)
+		TransactionsCycleStepPrefixTrie tcspt = new TransactionsCycleStepPrefixTrie(miningSettings, 
+				new CreatePrefixTrieStep(miningSettings)); 
+		
+		tcspt.addListenerExecute(new StepExecuteTimingListner());
+		
+		StepSequence ss2 = new StepSequence(miningSettings, new K_1LargeItemSetsCycleStep(miningSettings, 
+				new RemoveCandadateStep(miningSettings)),
+		new K_1LargeItemSetsCycleStep(miningSettings,
+				new K_1LargeItemSetsFromCurrentCycleStep(miningSettings,
+						new CreateKItemSetCandidateStep(miningSettings),
+						new IsThereCurrenttCandidate(miningSettings,
+								new GetCandidateSupportStep(miningSettings))
 				)
-		);
+		));
+		
+		ss2.addListenerExecute(new StepExecuteTimingListner());
+
+		StepSequence ss = new StepSequence(miningSettings, tcspt, ss2);
+		
+		ss.addListenerExecute(new StepExecuteTimingListner());
+		
+		LargeItemSetListsCycleStep lislcs = new LargeItemSetListsCycleStep(miningSettings, ss);
 
 		lislcs.addListenerExecute(new StepExecuteTimingListner());
 

@@ -1,6 +1,5 @@
 package org.eltech.ddm.associtionrules.aprioriprefixtree.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eltech.ddm.associationrules.AssociationRulesFunctionSettings;
@@ -34,9 +33,7 @@ public class AprioriPrefixTrieModel extends AprioriMiningModel{
 			if(mm == this)
 				continue;
 			AprioriPrefixTrieModel aptmm = (AprioriPrefixTrieModel) mm;
-//			System.out.println("join " + aptmm.getLargeItemSetsList());
 			int i = getCurrentLargeItemSets();
-//			System.out.println(i);
 			if (i >= largeItemSetsList.size()) {
 				largeItemSetsList.add(new ItemSets());
 			}
@@ -58,7 +55,7 @@ public class AprioriPrefixTrieModel extends AprioriMiningModel{
 			largeItemSetsList.get(i - 1).clear();
 			largeItemSetsList.get(i - 1).addAll(aptmm.getLargeItemSetsList().get(i - 1));
 		}
-
+		
 	}
 
 }

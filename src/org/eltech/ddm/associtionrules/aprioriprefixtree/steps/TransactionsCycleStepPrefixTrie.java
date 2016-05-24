@@ -31,17 +31,16 @@ public class TransactionsCycleStepPrefixTrie extends CycleStep{
 	protected EMiningModel initLoop(MiningInputStream inputData, EMiningModel model ) throws MiningException {
 		((AssociationRulesMiningModel) model).setCurrentTransaction(0);
 		((AprioriPrefixTrieModel) model).setTrie(new Trie());
-		//setStateParameter(model, AssociationRulesMiningModel.NAME_CURRENT_TRANSACTION, 0);
+		
 		return model;
 	}
 
 	@Override
 	protected boolean conditionLoop(MiningInputStream inputData, EMiningModel model ) throws MiningException {
+
 		return ((AssociationRulesMiningModel) model).getCurrentTransaction() <
 				((AssociationRulesMiningModel) model).getTransactionList().size();
 
-//		return (Integer)getStateParameter(model, AssociationRulesMiningModel.NAME_CURRENT_TRANSACTION) <
-//				((AssociationRulesMiningModel) model).getTransactionList().size();
 	}
 
 	@Override
@@ -53,8 +52,6 @@ public class TransactionsCycleStepPrefixTrie extends CycleStep{
 	@Override
 	protected EMiningModel afterIteration(MiningInputStream inputData, EMiningModel model ) throws MiningException {
 		((AssociationRulesMiningModel) model).setCurrentTransaction( ((AssociationRulesMiningModel) model).getCurrentTransaction() + 1);
-		//		setStateParameter(model, AssociationRulesMiningModel.NAME_CURRENT_TRANSACTION,
-//				(Integer)getStateParameter(model, AssociationRulesMiningModel.NAME_CURRENT_TRANSACTION) + 1);
 		
 		return model;
 	}

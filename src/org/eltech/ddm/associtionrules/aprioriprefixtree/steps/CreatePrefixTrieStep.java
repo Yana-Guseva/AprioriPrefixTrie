@@ -3,7 +3,6 @@ package org.eltech.ddm.associtionrules.aprioriprefixtree.steps;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eltech.ddm.associationrules.Transaction;
 import org.eltech.ddm.associtionrules.aprioriprefixtree.model.AprioriPrefixTrieModel;
@@ -24,15 +23,8 @@ public class CreatePrefixTrieStep extends Step{
 	protected EMiningModel execute(MiningInputStream inputData, EMiningModel model) throws MiningException {
 		AprioriPrefixTrieModel modelA = (AprioriPrefixTrieModel) model;
 		Transaction transaction = modelA.getTransactionList().getTransaction(modelA.getCurrentTransaction());
-		System.out.println(Thread.currentThread().getName() + " " + transaction);
 		int k = modelA.getCurrentLargeItemSets() + 1;
 		insertIntoTrie(modelA.getTrie(), transaction, k);
-//		transaction.getItemIDList().sort(null);
-//		System.out.println(transaction);
-//		List<String> subList = transaction.getItemIDList().subList(modelA.getCurrentItem(), modelA.getCurrentItemSet2());
-//		Trie trie = modelA.getTrie();
-//		System.out.println("sub " + subList);
-//		trie.put(subList);
 		return modelA;
 	}
 	

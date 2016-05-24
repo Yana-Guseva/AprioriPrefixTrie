@@ -38,7 +38,7 @@ public class AprioriAlgoritmPrefixTrieLoadTest extends AprioriPrefixTrieLoadlTes
 		System.out.println("----- AprioriPrefixTrieAlgorithm -------");
 		
 //		for(int i=0; i < dataSets.length; i++){
-			setSettings(0);
+			setSettings(8);
 		
 			AprioriPrefixTrieAlgorithm algorithm = new AprioriPrefixTrieAlgorithm(miningSettings);
 			System.out.println("Start algorithm");

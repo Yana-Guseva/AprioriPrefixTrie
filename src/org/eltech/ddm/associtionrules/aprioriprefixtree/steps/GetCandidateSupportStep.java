@@ -19,7 +19,6 @@ public class GetCandidateSupportStep extends Step{
 		AprioriPrefixTrieModel modelA = (AprioriPrefixTrieModel) model;
 		ItemSet itemSet = modelA.getLargeItemSetsList().get(modelA.getCurrentLargeItemSets()).get(modelA.getCurrentCandidate());
 		itemSet.setSupportCount(modelA.getTrie().get(itemSet.getItemIDList()));
-//		System.out.println("cand " + itemSet + " " + itemSet.getSupportCount());
 		return modelA;
 	}
 

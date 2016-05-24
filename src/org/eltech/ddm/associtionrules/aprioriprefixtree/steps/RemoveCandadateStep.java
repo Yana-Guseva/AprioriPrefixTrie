@@ -23,21 +23,15 @@ public class RemoveCandadateStep extends Step{
 	protected EMiningModel execute(MiningInputStream inputData, EMiningModel model) throws MiningException {
 		AprioriPrefixTrieModel modelA = (AprioriPrefixTrieModel) model;
 		int index = ((AprioriMiningModel) model).getCurrentLargeItemSets() - 2;
-//		System.out.println(index);
-//		System.out.println(Thread.currentThread().getName() + "large " + modelA.getLargeItemSetsList());
-//		System.out.println(Thread.currentThread().getName() + "transList " + modelA.getTransactionList());
 		if (index >= 0) {
 			ItemSets itemsetList = modelA.getLargeItemSetsList().get(index + 1);
 				ItemSet itemSet = itemsetList.get(
 						((AprioriMiningModel) model).getCurrentItemSet());
-//				System.out.println("itemset " + itemSet + " " + itemSet.getSupportCount());
 				if(((double)itemSet.getSupportCount()/(double)modelA.getTransactionCount())<minSupport){
 					itemsetList.remove(itemSet);
 					modelA.setCurrentItemSet(modelA.getCurrentItemSet() - 1);
-//					System.out.println("remove " + itemSet);
 				} 
 		}
-//		System.out.println("after remove " + modelA.getLargeItemSetsList());
 		return modelA;
 	}
 

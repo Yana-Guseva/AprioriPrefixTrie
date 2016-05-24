@@ -20,11 +20,8 @@ import org.eltech.ddm.associtionrules.aprioriprefixtree.steps.RemoveCandadateSte
 import org.eltech.ddm.associtionrules.aprioriprefixtree.steps.TransactionsCycleStepPrefixTrie;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.miningcore.MiningException;
-import org.eltech.ddm.miningcore.algorithms.EventType;
 import org.eltech.ddm.miningcore.algorithms.MiningAlgorithm;
 import org.eltech.ddm.miningcore.algorithms.ParallelByData;
-import org.eltech.ddm.miningcore.algorithms.Step;
-import org.eltech.ddm.miningcore.algorithms.StepExecuteListener;
 import org.eltech.ddm.miningcore.algorithms.StepExecuteTimingListner;
 import org.eltech.ddm.miningcore.algorithms.StepSequence;
 import org.eltech.ddm.miningcore.algorithms.VectorsCycleStep;
@@ -56,19 +53,33 @@ public class AprioriPrefixTrieParallelAlgorithm extends MiningAlgorithm{
 						new CreateLarge1ItemSetStep(miningSettings)));
 		tcs.addListenerExecute(new StepExecuteTimingListner());
 		
-		StepSequence ss = new StepSequence(miningSettings,
-				new TransactionsCycleStepPrefixTrie(miningSettings, 
-						new CreatePrefixTrieStep(miningSettings)),
-				new K_1LargeItemSetsCycleStep(miningSettings, 
-						new RemoveCandadateStep(miningSettings)),
-				new K_1LargeItemSetsCycleStep(miningSettings,
-						new K_1LargeItemSetsFromCurrentCycleStep(miningSettings,
-								new CreateKItemSetCandidateStep(miningSettings),
-								new IsThereCurrenttCandidate(miningSettings,
-										new GetCandidateSupportStep(miningSettings))
-						)
-				)
+		TransactionsCycleStepPrefixTrie tcpt = new TransactionsCycleStepPrefixTrie(miningSettings, 
+				new CreatePrefixTrieStep(miningSettings));
+		
+		tcpt.addListenerExecute(new StepExecuteTimingListner());
+		
+		K_1LargeItemSetsCycleStep k_1liscs = new K_1LargeItemSetsCycleStep(miningSettings, 
+				new RemoveCandadateStep(miningSettings));
+		
+//		k_1liscs.addListenerExecute(new StepExecuteTimingListner());
+		
+		K_1LargeItemSetsFromCurrentCycleStep k_1lisfccs = new K_1LargeItemSetsFromCurrentCycleStep(miningSettings, new CreateKItemSetCandidateStep(miningSettings),
+				new IsThereCurrenttCandidate(miningSettings,
+						new GetCandidateSupportStep(miningSettings)));
+		
+//		k_1lisfccs.addListenerExecute(new StepExecuteTimingListner());
+		
+		K_1LargeItemSetsCycleStep k_1liscs2 = new K_1LargeItemSetsCycleStep(miningSettings,
+				new K_1LargeItemSetsFromCurrentCycleStep(miningSettings, k_1lisfccs)
 		);
+		
+//		k_1liscs2.addListenerExecute(new StepExecuteTimingListner());
+		
+		StepSequence ss2 = new StepSequence(miningSettings, k_1liscs, k_1liscs2);
+		
+		ss2.addListenerExecute(new StepExecuteTimingListner());
+		
+		StepSequence ss = new StepSequence(miningSettings, tcpt, ss2);
 		
 		ss.addListenerExecute(new StepExecuteTimingListner());
 
